@@ -1,27 +1,12 @@
-# Next.js + Tailwind CSS Example
+# Overview
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+A social media app, loosely based on Instagram and Facebook. This app uses a GraphQl [Hasura](https://hasura.io/) Backend with a [PostgreSQL](https://www.postgresql.org/) Database and [Next.js](https://nextjs.org/) as it's frontend and API Server.
 
-## Preview
+Authentication is managed through [NextAuth](https://next-auth.js.org/) with a custom hasura adapter.
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+The GraphQl request are send via [ApolloClient](https://www.apollographql.com/docs/react/) for React.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+# Realtime Chat
 
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+In order to achieve a realtime chat, the app uses a websocket connection to the hasura server to display chat messages.
+All other calls the the database / hasura server use a normal http connection.
