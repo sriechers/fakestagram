@@ -1,28 +1,13 @@
+import { useState } from "react";
 import UserIcon from "../UserIcon";
-// import { GET_FOLLOWERS_FROM_USER_ID } from "../../db/queries";
-import { useQuery, gql } from "@apollo/client";
+import { GET_USERS_FOLLOWED } from "../../db/queries";
+import { useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import LoadingSpinner from "../LoadingSpinner";
+import Link from "next/link";
 function ChatList() {
   const { data: session } = useSession();
-
-  // TODO change to global follower query
-  const GET_FOLLOWERS_FROM_USER = gql`
-    query GetFollowers($followerId: Int!) {
-      followers(where: { followerId: { _eq: $followerId } }) {
-        id
-        user {
-          displayName
-          photoUrl
-          id
-          userHandle
-          username
-        }
-      }
-    }
-  `;
-
-  const { data, error, loading } = useQuery(GET_FOLLOWERS_FROM_USER, {
+  const { data, error, loading } = useQuery(GET_USERS_FOLLOWED, {
     context: {
       headers: {
         authorization: session?.hasuraToken
@@ -31,7 +16,7 @@ function ChatList() {
       },
     },
     variables: {
-      followerId: session?.user?.id || null,
+      userId: session?.user?.id || null,
     },
   });
 
@@ -48,8 +33,6 @@ function ChatList() {
     return <LoadingSpinner />;
   }
 
-  console.log(data);
-
   return (
     <ul className="bg-card">
       {data?.followers.map((follower, i) => (
@@ -59,22 +42,36 @@ function ChatList() {
             i !== data.followers.length - 1
               ? "border-b-slate-100 border-b-2 mb-3 pb-3"
               : ""
-          } flex items-center`}
+          }`}
         >
-          <div>
-            <UserIcon user={follower.user} height="3rem" width="3rem" />
-          </div>
-          <div className="ml-3 flex justify-between grow">
-            <div>
-              <p className="text-slate-900 font-medium text-lg">
-                {follower.user.displayName}
-              </p>
-              <p className="text-slate-400 text-base tracking-wide">
-                last chat message
-              </p>
-            </div>
-            <time>9:00</time>
-          </div>
+          <Link
+            href={{
+              pathname: "/inbox/[roomId]",
+              query: {
+                roomId: follower.userByUserid.userHandle,
+              },
+            }}
+          >
+            <a className="flex items-center">
+              <div>
+                <UserIcon
+                  user={follower.userByUserid}
+                  height="3rem"
+                  width="3rem"
+                />
+              </div>
+              <div className="ml-3 flex justify-between grow">
+                <div>
+                  <p className="text-slate-900 font-medium text-lg">
+                    {follower.userByUserid.displayName}
+                  </p>
+                  {/* <p className="text-slate-400 text-base tracking-wide">
+                    start chatting
+                  </p> */}
+                </div>
+              </div>
+            </a>
+          </Link>
         </li>
       ))}
     </ul>

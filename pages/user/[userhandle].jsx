@@ -7,7 +7,7 @@ import {
   GET_POSTS_FROM_USER_ID,
   ADD_FOLLOWER,
   DELETE_FOLLOWER,
-  GET_FOLLOWERS_FROM_USER_ID,
+  GET_FOLLOWERS_OF_USER,
 } from "../../db/queries";
 import { apolloClient } from "../../db";
 import Head from "next/head";
@@ -19,7 +19,7 @@ import Link from "next/link";
 function Profile({ session, userData, userPosts, isOwnProfile, followers }) {
   const postCount = userPosts[0]?.user.posts_aggregate.aggregate.count;
   const { data: followerData, error: followersError } = useQuery(
-    GET_FOLLOWERS_FROM_USER_ID,
+    GET_FOLLOWERS_OF_USER,
     {
       context: {
         headers: {
@@ -54,7 +54,7 @@ function Profile({ session, userData, userPosts, isOwnProfile, followers }) {
       userId: userData?.id,
       followerId: session?.user?.id,
     },
-    refetchQueries: [GET_FOLLOWERS_FROM_USER_ID],
+    refetchQueries: [GET_FOLLOWERS_OF_USER],
     context: {
       headers: {
         authorization: session?.hasuraToken
@@ -72,7 +72,7 @@ function Profile({ session, userData, userPosts, isOwnProfile, followers }) {
       userId: userData?.id,
       followerId: session?.user?.id,
     },
-    refetchQueries: [GET_FOLLOWERS_FROM_USER_ID],
+    refetchQueries: [GET_FOLLOWERS_OF_USER],
     context: {
       headers: {
         authorization: session?.hasuraToken
@@ -239,7 +239,7 @@ export async function getServerSideProps(context) {
 
   // const { data: followerData, error: followersError } =
   //   await apolloClient.query({
-  //     query: GET_FOLLOWERS_FROM_USER_ID,
+  //     query: GET_FOLLOWERS_OF_USER,
   //     context: {
   //       headers: {
   //         authorization: session.hasuraToken

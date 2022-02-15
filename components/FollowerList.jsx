@@ -1,11 +1,11 @@
 import UserIcon from "./UserIcon";
 import Link from "next/link";
 import { useQuery, gql } from "@apollo/client";
-import { GET_FOLLOWERS_FROM_USER_ID } from "../db/queries";
+import { GET_FOLLOWERS_OF_USER } from "../db/queries";
 import { motion } from "framer-motion";
 import LoadingSpinner from "./LoadingSpinner";
 function FollowerList({ session, limit = 5 }) {
-  const { data: followerData } = useQuery(GET_FOLLOWERS_FROM_USER_ID, {
+  const { data: followerData } = useQuery(GET_FOLLOWERS_OF_USER, {
     context: {
       headers: {
         authorization: session.hasuraToken

@@ -29,7 +29,18 @@ export function Scaffold(props) {
   );
 }
 
-function Layout({ children }) {
+export const LayoutOnlyNav = ({ children }) => {
+  return (
+    <>
+      <AppBar />
+      <LoadingScreen />
+      {children}
+      <NavBar />
+    </>
+  );
+};
+
+export default function Layout({ children }) {
   return (
     <>
       <AppBar />
@@ -40,5 +51,3 @@ function Layout({ children }) {
     </>
   );
 }
-
-export default Layout;

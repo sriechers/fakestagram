@@ -1,31 +1,28 @@
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { useState, useCallback, memo } from "react";
-import { Scaffold } from "./Layout";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Portal from "../HOC/Portal";
 import { useMatchMedia } from "../util/hooks";
+// import { useSession } from "next-auth/react";
 import {
   HomeIcon as HomeIconOutline,
   SearchIcon as SearchIconOutline,
   PaperAirplaneIcon as PaperAirplaneIconOutline,
   CogIcon as CogIconOutline,
-  PlusCircleIcon as PlusCircleIconOutline,
-  UserCircleIcon as UserCircleIconOutline,
+  // UserCircleIcon as UserCircleIconOutline,
 } from "@heroicons/react/outline";
 import {
   HomeIcon,
   SearchIcon,
   PaperAirplaneIcon,
   CogIcon,
-  PlusCircleIcon,
-  UserCircleIcon,
+  // UserCircleIcon,
 } from "@heroicons/react/solid";
 
 const ListItem = memo(
   ({ children, onSelected, href = "/", horizontalSpacing = 0 }) => {
     const { pathname } = useRouter();
-
     return (
       <motion.li
         // animate
@@ -109,6 +106,24 @@ const NavBarContent = ({
                   )}
                 </ListItem>
               )}
+
+              {/* {session && (
+                <ListItem
+                  href={`/user/[userhandle]`}
+                  horizontalSpacing={horizontalSpacing}
+                  selected={selected}
+                  onSelected={select}
+                  pathParams={{
+                    userhandle: session.user.userHandle
+                  }}
+                >
+                  {pathname === `/user/[userhandle]` ? (
+                    <UserCircleIcon className="text-slate-900 h-6 w-6" />
+                  ) : (
+                    <UserCircleIconOutline className="text-slate-500 h-6 w-6" />
+                  )}
+                </ListItem>
+              )} */}
 
               <ListItem
                 href="/inbox"

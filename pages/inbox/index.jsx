@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Layout, { Scaffold, Measure } from "../components/Layout";
+import Layout, { Scaffold, Measure } from "../../components/Layout";
 import { getSession } from "next-auth/react";
-import ChatList from "../components/chat/ChatList";
+import ChatList from "../../components/chat/ChatList";
 function Inbox({ session }) {
   return (
     <>
@@ -11,7 +11,7 @@ function Inbox({ session }) {
       </Head>
       <Measure>
         <Scaffold>
-          <h1>Inbox</h1>
+          <h1>Chats</h1>
           <ChatList />
         </Scaffold>
       </Measure>

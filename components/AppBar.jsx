@@ -27,6 +27,10 @@ function AppBar({ onCancel, backIconType = "arrow", redirectBack = true }) {
     case "/inbox":
       title = "Your Messages";
       break;
+      
+    case "/inbox/[roomName]":
+      title = "Chat";
+      break;
 
     // case "/profile":
     //   title = "Profile"

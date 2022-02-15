@@ -29,7 +29,6 @@ function Post({
   description,
   created_at,
   post_likes_aggregate,
-  refetchPosts,
   comments = [],
 }) {
   const { data: session } = useSession();

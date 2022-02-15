@@ -139,7 +139,7 @@ export const GET_USER_BY_HANDLE = gql`
   }
 `;
 
-export const GET_FOLLOWERS_FROM_USER_ID = gql`
+export const GET_FOLLOWERS_OF_USER = gql`
   query GetFollowersFromUserId($userId: Int!) {
     followers(where: { userId: { _eq: $userId } }) {
       id
@@ -154,6 +154,22 @@ export const GET_FOLLOWERS_FROM_USER_ID = gql`
             count
           }
         }
+      }
+    }
+  }
+`;
+
+export const GET_USERS_FOLLOWED = gql`
+  query GetFollowers($userId: Int!) {
+    followers(where: { followerId: { _eq: $userId } }) {
+      id
+      userByUserid {
+        displayName
+        email
+        photoUrl
+        id
+        userHandle
+        username
       }
     }
   }
@@ -184,6 +200,24 @@ export const SEARCH = `
   }
 `;
 
+export const USER_SETTING = gql`
+  query UserSetting($userId: Int!) {
+    user_settings(where: { userId: { _eq: $userId } }) {
+      id
+      timezone
+      userId
+    }
+  }
+`;
+
+export const GET_CHAT_ROOM = `
+  query GetChatRoom($roomName: String!) {
+    chat_rooms(where: { name: { _eq: $roomName } }) {
+      name
+      id
+    }
+  }
+`;
 // ANCHOR MUTATIONS
 export const INSERT_POST_LIKE = `
   mutation InsertPostLike($postId: Int!, $userId: Int!) {
@@ -287,19 +321,79 @@ export const DELETE_FOLLOWER = gql`
   }
 `;
 
-// // ANCHOR SUBSCRIPTIONS
-// export const commentsSubscriptionByPostId = `
-//   subscription CommentsSubscriptionByPostId($postId: Int!) {
-//     comments(where: {postId: {_eq: $postId}}) {
-//       created_at
-//       id
-//       text
-//       user {
-//         photoUrl
-//         id
-//         displayName
-//         userHandle
-//       }
-//     }
-//   }
-// `;
+export const UPDATE_USER_SETTINGS = gql`
+  mutation UpdateUserSettings(
+    $userId: Int!
+    $timezone: String = "Europe/Berlin"
+  ) {
+    insert_user_settings_one(
+      object: { timezone: $timezone, userId: $userId }
+      on_conflict: {
+        constraint: user_settings_userId_key
+        update_columns: timezone
+        where: { userId: { _eq: $userId } }
+      }
+    ) {
+      userId
+      timezone
+      id
+    }
+  }
+`;
+
+export const ADD_CHAT_MESSAGE = gql`
+  mutation AddChatMessage(
+    $fromUserId: Int!
+    $toUserId: Int!
+    $message: String!
+    $roomId: uuid!
+  ) {
+    insert_chat_messages_one(
+      object: {
+        fromUserId: $fromUserId
+        toUserId: $toUserId
+        message: $message
+        roomId: $roomId
+      }
+    ) {
+      id
+    }
+  }
+`;
+
+export const CREATE_CHAT_ROOM = `
+  mutation CreateChatRoom($roomName: String!) {
+    insert_chat_rooms_one(
+      object: { name: $roomName }
+      on_conflict: { constraint: chat_rooms_pkey, update_columns: name }
+    ) {
+      id
+      name
+    }
+  }
+`;
+
+// ANCHOR SUBSCRIPTIONS
+export const SUBSCRIPTION_CHAT_MESSAGES = gql`
+  subscription SubscriptionChatMessages($roomId: uuid!) {
+    chat_messages(where: { roomId: { _eq: $roomId } }) {
+      id
+      message
+      createdAt: created_at
+      fromUser: user {
+        displayName
+        photoUrl
+        id
+        userHandle
+        username
+      }
+      toUser: userByTouserid {
+        displayName
+        photoUrl
+        id
+        userHandle
+        username
+      }
+    }
+  }
+`;

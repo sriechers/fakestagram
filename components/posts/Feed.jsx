@@ -1,6 +1,6 @@
 import Post from "./Post";
 import LoadingSpinner from "../LoadingSpinner";
-function Feed({ posts, loading, refetchPosts, className }) {
+function Feed({ posts, loading, className }) {
   return (
     <div
       className={`${className ? className : ""} ${
@@ -25,7 +25,7 @@ function Feed({ posts, loading, refetchPosts, className }) {
           </>
         ))}
       {posts?.map((post) => (
-        <Post key={`post-${post.id}`} {...post} refetchPosts={refetchPosts} />
+        <Post key={`post-${post.id}`} {...post}/>
       ))}
     </div>
   );
