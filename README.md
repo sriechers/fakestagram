@@ -6,6 +6,10 @@ Authentication is managed through [NextAuth](https://next-auth.js.org/) with a c
 
 The GraphQl request are send via [ApolloClient](https://www.apollographql.com/docs/react/) for React.
 
+# DEMO available
+
+You can check out a working demo of the project [here](https://fakestagram-sriechers.vercel.app/)
+
 # Realtime Chat
 
 In order to achieve a realtime chat, the app uses a websocket connection to the hasura server to display chat messages.
